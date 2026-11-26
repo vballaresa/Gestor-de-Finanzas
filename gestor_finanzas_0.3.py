@@ -59,7 +59,7 @@ def generar_grafico():
 
 ventana = tk.Tk()
 ventana.title("Gestor de Finanzas Personales v0.3")
-ventana.geometry("320x500")
+ventana.geometry("500x500")
 
 etiqueta = tk.Label(ventana, text="Bienvenido al gestor de finanzas personales v0.3")
 etiqueta.pack(pady=5)
