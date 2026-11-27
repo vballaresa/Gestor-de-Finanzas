@@ -56,10 +56,28 @@ def generar_grafico():
     plt.title('Distribución de Ingresos y Gastos')
     plt.axis('equal')
     plt.show()
+def eliminar_registro():
+    seleccion = lista.curselection()
+    if seleccion:
+        indice = seleccion[0]
+        registro = lista.get(indice)
+        if registro.startswith("Ingreso:"):
+            nombre = registro.split(" - ")[0].replace("Ingreso: ", "")
+            ingresos[:] = [(n, m) for n, m in ingresos if n != nombre]
+        elif registro.startswith("Gasto:"):
+            nombre = registro.split(" - ")[0].replace("Gasto: ", "")
+            gastos[:] = [(n, m) for n, m in gastos if n != nombre]
+        lista.delete(indice)
+        ingresos_total = sum(monto_ingreso for _, monto_ingreso in ingresos)
+        gastos_total = sum(monto_gasto for _, monto_gasto in gastos)
+        ahorros = ingresos_total - gastos_total
+        inicio.config(text=f"Total de ingresos: {ingresos_total:.2f} | Total de gastos: {gastos_total:.2f} | Ahorros: {ahorros:.2f}")
+    else:
+        tk.messagebox.showinfo("Información", "Por favor, seleccione un registro para eliminar.")
 
 ventana = tk.Tk()
 ventana.title("Gestor de Finanzas Personales v0.3")
-ventana.geometry("500x500")
+ventana.geometry("600x600")
 
 etiqueta = tk.Label(ventana, text="Bienvenido al gestor de finanzas personales v0.3")
 etiqueta.pack(pady=5)
@@ -84,12 +102,12 @@ guardar_button.pack(pady=10)
 lista = tk.Listbox(ventana, width=50, height=10)
 lista.pack(pady=10)
 
+eliminar_button = ttk.Button(ventana, text="Eliminar registro", command=eliminar_registro)
+eliminar_button.pack(pady=10)
+
+tk.Label(ventana, text="Aqui puedes generar un grafico de PIE.").pack()
+
 grafico_button = ttk.Button(ventana, text="Generar gráfico", command=generar_grafico)
 grafico_button.pack(pady=10)
-
-
-
-
-
 
 ventana.mainloop()
